@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import MenuView from "../views/MenuView.vue";
 import MenuDetail from "../views/MenuDetail.vue";
+import KeranjangView from "../views/KeranjangView.vue";
+import PesananSukses from "../views/PesananSukses.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +23,16 @@ const routes = [
     path: "/menu/:id",
     name: "menuDetail",
     component: MenuDetail,
+  },
+  {
+    path: "/keranjang",
+    name: "keranjangView",
+    component: KeranjangView,
+  },
+  {
+    path: "/pesanan-sukses",
+    name: "PesananSukses",
+    component: PesananSukses,
   },
   {
     path: "/about",

@@ -21,36 +21,86 @@
           </nav>
         </div>
       </div>
-
-      <div class="row mt-3">
-        <div class="col md-6">
-          <img
-            :src="require(`../assets/images/${product.gambar}`)"
-            class="img-fluid"
-            alt="..."
-          />
+      <!-- desktop -->
+      <div class="d-none d-md-block">
+        <div class="row mt-3">
+          <div class="col md-6">
+            <img
+              :src="require(`../assets/images/${product.gambar}`)"
+              class="img"
+              alt="..."
+            />
+          </div>
+          <div class="col md-6">
+            <h3>
+              <strong>{{ product.nama }}</strong>
+            </h3>
+            <h5>
+              Harga : <strong> Rp. {{ product.harga }}</strong>
+            </h5>
+            <form class="mt-4" v-on:submit.prevent>
+              <div class="form-group">
+                <label for="jumlah_pemesanan">Jumlah Pesan</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="pesan.jumlah_pemesanan"
+                />
+              </div>
+              <div class="form-group">
+                <label for="keterangan">Keterangan</label>
+                <textarea
+                  v-model="pesan.keterangan"
+                  class="form-control"
+                  placeholder="Keterangan seperti : Pedas, Nasi Diperbanyak ..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-success" @click="pemesanan">
+                <b-icon-cart></b-icon-cart>Pesan
+              </button>
+            </form>
+          </div>
         </div>
-        <div class="col md-6">
-          <h3>
-            <strong>{{ product.nama }}</strong>
-          </h3>
-          <h5>
-            Harga : <strong> Rp. {{ product.harga }}</strong>
-          </h5>
-          <form class="mt-4">
-            <div class="form-group">
-              <label for="jumlah_pemesanan">Jumlah Pesan</label>
-              <input type="number" class="form-control" />
-            </div>
-            <div class="form-group">
-              <label for="keterangan">Keterangan</label>
-              <textarea
-                class="form-control"
-                placeholder="Ketrangan seperti : Pedas, Nasi Diperbanyak ..."
-              ></textarea>
-            </div>
-            <button type="submit" class="btn btn-success"><b-icon-cart></b-icon-cart>Pesan</button>
-          </form>
+      </div>
+      <!-- mobile -->
+      <div class="d-sm-block d-md-none">
+        <div class="row mt-3">
+          <div class="col-md-6 ">
+            <img
+              :src="require(`../assets/images/${product.gambar}`)"
+              class="img"
+              alt="..."
+            />
+          </div>
+          <div class="col-md-6 mt-5">
+            <h3>
+              <strong>{{ product.nama }}</strong>
+            </h3>
+            <h5>
+              Harga : <strong> Rp. {{ product.harga }}</strong>
+            </h5>
+            <form class="mt-4" v-on:submit.prevent>
+              <div class="form-group">
+                <label for="jumlah_pemesanan">Jumlah Pesan</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="pesan.jumlah_pemesanan"
+                />
+              </div>
+              <div class="form-group">
+                <label for="keterangan">Keterangan</label>
+                <textarea
+                  v-model="pesan.keterangan"
+                  class="form-control"
+                  placeholder="Keterangan seperti : Pedas, Nasi Diperbanyak ..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-success" @click="pemesanan">
+                <b-icon-cart></b-icon-cart>Pesan
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -70,11 +120,36 @@ export default {
   data() {
     return {
       product: {},
+      pesan: {},
     };
   },
   methods: {
     setProduct(data) {
       this.product = data;
+    },
+    pemesanan() {
+      if (this.pesan.jumlah_pemesanan) {
+        this.pesan.products = this.product;
+        axios
+          .post("http://localhost:3000/keranjangs", this.pesan)
+          .then(() => {
+            this.$router.push({ path: "/keranjang" });
+            this.$toast.success("Berhasil Masuk Keranjang", {
+              type: "success",
+              position: "top-right",
+              duration: 3000,
+              dismissible: true,
+            });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        this.$toast.error("Jumlah Pesanan Harus Diisi", {
+          type: "error",
+          position: "top-right",
+          duration: 3000,
+          dismissible: true,
+        });
+      }
     },
   },
   mounted() {

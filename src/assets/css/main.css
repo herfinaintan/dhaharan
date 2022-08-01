@@ -21,7 +21,7 @@ img {
     border-radius: 15px ;
 }
 .card-product:hover{
-    transform: translateY( -3px ) scale( 1.05 ) rotateX( 10deg );
+    transform: translateY( -3px ) scale( 1.04 ) rotateX( 10deg );
     box-shadow: 0 8px 16px 3px 
 }
 .card-img-top{
